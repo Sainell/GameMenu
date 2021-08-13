@@ -15,6 +15,10 @@ public class MenuController : MonoBehaviour
     [SerializeField] public Toggle MusicToggle;
     [SerializeField] public Toggle SoundToggle;
 
+    [SerializeField] public GameObject Game;
+    [SerializeField] public GameObject GameUI;
+    [SerializeField] public GameObject Menu;
+
     private void Awake()
     {
         PlayButton.onClick.AddListener(PlayGame);
@@ -26,7 +30,9 @@ public class MenuController : MonoBehaviour
 
     private void PlayGame()
     {
-
+        Game.SetActive(true);
+        GameUI.SetActive(true);
+        Menu.SetActive(false);
     }
 
     private void OpenSettingsMenu()
