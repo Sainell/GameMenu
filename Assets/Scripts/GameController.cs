@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
     {
         _controllers.Add(new WaterController());
         _controllers.Add(new FishController());
+        _controllers.Add(new HookController());
 
        foreach(var controller in _controllers)
         {
