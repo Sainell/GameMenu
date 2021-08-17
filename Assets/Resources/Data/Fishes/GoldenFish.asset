@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 224bfb2db7575eb42a52b32d891a2b56, type: 3}
+  m_Name: GoldenFish
+  m_EditorClassIdentifier: 
+  FishType: 1
+  FishPrefab: {fileID: 8585121596594742349, guid: 1b9a2cb8e2d5c54448ca4d6e8e0533df, type: 3}
+  FishSpeed: 3
+  FishSpawnDelay: 1
+  FishCatchedPoint: 5
