@@ -58,6 +58,7 @@ public class HookController : BaseController
                 _catchedItem.transform.SetParent(null);
                 _isCatchedSmth = false;
                 _catchedItem = null;
+                _interactableBehaviour.CatchedEvent += OnCatched;
             }
             _direction = Vector3.zero;
         }
@@ -74,6 +75,7 @@ public class HookController : BaseController
     {
         _isCatchedSmth = true;
         _catchedItem = catchedItem;
+        _interactableBehaviour.CatchedEvent -= OnCatched;
     }
 
 

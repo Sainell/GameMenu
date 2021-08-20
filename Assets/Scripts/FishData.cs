@@ -8,8 +8,25 @@ public class FishData : ScriptableObject
     public FishType FishType;
     public GameObject FishPrefab;
     public float FishSpeed;
-    public float FishSpawnDelay;
+    public float FishSpawnDelayMin;
+    public float FishSpawnDelayMax;
     public int FishCatchedPoint;
+    public int SpawnCountMin;
+    public int SpawnCountMax;
+    
+    private int _spawnCount;
 
-    public InteractableBehaviour InteractableBehaviour;
+    public InteractableBehaviour InteractableBehaviour { get; set; }
+
+    public int GetSpawnCount()
+    {
+        if (_spawnCount == 0)
+            _spawnCount = Random.Range(SpawnCountMin, SpawnCountMax);
+        return _spawnCount;
+    }
+    public float GetRandomSpawnDelayTime()
+    {
+        var delayTime = Random.Range(FishSpawnDelayMin, FishSpawnDelayMax);
+        return delayTime;
+    }
 }

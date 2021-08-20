@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: RedFish
   m_EditorClassIdentifier: 
   FishType: 2
-  FishPrefab: {fileID: 8585121596594742349, guid: 8c2d96cd6f123f145ae33260a8ee3f74, type: 3}
+  FishPrefab: {fileID: 8585121596594742349, guid: bf5d3d273a317dc48a8d3b2d6f6d51a0, type: 3}
   FishSpeed: 5
-  FishSpawnDelay: 3
+  FishSpawnDelayMin: 7
+  FishSpawnDelayMax: 15
   FishCatchedPoint: 10
+  SpawnCountMin: 1
+  SpawnCountMax: 3
