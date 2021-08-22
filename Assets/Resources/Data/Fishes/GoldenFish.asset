@@ -15,8 +15,8 @@ MonoBehaviour:
   FishType: 1
   FishPrefab: {fileID: 8585121596594742349, guid: 1b9a2cb8e2d5c54448ca4d6e8e0533df, type: 3}
   FishSpeed: 3
-  FishSpawnDelayMin: 6
-  FishSpawnDelayMax: 10
+  FishSpawnDelayMin: 2
+  FishSpawnDelayMax: 6
   FishCatchedPoint: 5
-  SpawnCountMin: 1
-  SpawnCountMax: 5
+  SpawnCountMin: 5
+  SpawnCountMax: 10

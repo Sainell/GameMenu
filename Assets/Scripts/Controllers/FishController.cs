@@ -13,6 +13,8 @@ public class FishController : BaseController
     private bool _isCatched;
     private GameObject _catchedFish;
     private bool _isFirstSpawn = true;
+    private bool _isNeedSpawnTimer;
+
 
     public override void Initialise()
     {
@@ -25,6 +27,7 @@ public class FishController : BaseController
     {
         FishesSpawn();
         MoveFish();
+        SpawnTimer();
     }
     public override void Dispose()
     {
@@ -42,76 +45,91 @@ public class FishController : BaseController
             if (!CheckIsPulledOut(_catchedFish))
                 return;
         }
-        _isCatched = false;
-        _isFirstSpawn = false;
-        _catchedFish = null;
         foreach (var fish in _fishesData)
         {
             if (!CheskIsNeedSpawn(fish))
             {
                 continue;
             }
-            for (int i = 0; i < fish.GetSpawnCount(); i++)
+            for (int i = 0; i < fish.CurrentSpawnCount; i++)
             {
                 if (_spawnTime < fish.GetRandomSpawnDelayTime())
-                {
-                    SpawnTimer();
+                {                   
                     --i;
-                    continue;
+                    return;
                 }
                 var spawnPoint = _fishesSpawnPoints[Random.Range(0, _fishesSpawnPoints.Count)];
                 var newFish = GameObject.Instantiate(fish.FishPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
-                newFish.name = fish.FishType.ToString();
+                newFish.name = $"{fish.FishType}{newFish.GetInstanceID()}";
                 _fishesDic.Add(newFish, fish);
                 fish.InteractableBehaviour = newFish.GetComponent<InteractableBehaviour>();
                 fish.InteractableBehaviour.CatchedEvent += OnCatched;
+                _isCatched = false;
+                _catchedFish = null;
                 _spawnTime = 0;
             }
         }
+        _isFirstSpawn = false;
     }
 
     private void SpawnTimer()
     {
-        _spawnTime += Time.deltaTime;
+        if (_isNeedSpawnTimer)
+        {
+            _spawnTime += Time.deltaTime;
+        }
     }
 
     private bool CheskIsNeedSpawn(FishData fishData)
     {
         var dataCount = _fishesDic.Count(x => x.Value.Equals(fishData));
         if (dataCount != 0 && dataCount >= fishData.GetSpawnCount())
+        {
             return false;
+        }
         else
+        {
+            fishData.CurrentSpawnCount = fishData.GetSpawnCount() - dataCount;
+            _isNeedSpawnTimer = true;
             return true;
+        }
     }
 
     private bool CheckIsPulledOut(GameObject fish)
     {
-        return _isPulledOut = fish == null ? false : fish.activeSelf == true ? false : true;
+        _isPulledOut = fish == null ? false : fish.activeSelf == true ? false : true;
+        if (!_isPulledOut)
+        {
+            _isNeedSpawnTimer = false;
+            _spawnTime = 0;
+        }
+        return _isPulledOut;
     }
 
     private void MoveFish()
     {
-        foreach(var fish in _fishesDic)
+        foreach (var fish in _fishesDic)
         {
-            fish.Key.transform.Translate(Vector3.right * _fishesDic[fish.Key].FishSpeed * Time.deltaTime);
-            CheckFishOutOfScreen(fish.Key);
+            if (CheckFishOutOfScreen(fish.Key))
+                fish.Key.transform.Translate(Vector3.right * _fishesDic[fish.Key].FishSpeed * Time.deltaTime);
         }
     }
 
-    private void CheckFishOutOfScreen(GameObject fish)
+    private bool CheckFishOutOfScreen(GameObject fish)
     {
-        if(Mathf.Abs(fish.transform.position.x) > 10f)
+        if (Mathf.Abs(fish.transform.position.x) > 15f)
         {
             var spawnPoint = _fishesSpawnPoints[Random.Range(0, _fishesSpawnPoints.Count)];
             fish.transform.SetPositionAndRotation(spawnPoint.transform.position, spawnPoint.transform.rotation);
+            return false;
         }
+        return true;
     }
 
     private void OnCatched(GameObject collision, GameObject catchedFish)
     {
         if (!_isCatched && collision.tag.Equals("Hook"))
         {
-            catchedFish.transform.SetParent(collision.transform);
             _isCatched = true;
             _catchedFish = catchedFish;
             _fishesDic[catchedFish].InteractableBehaviour.CatchedEvent -= OnCatched;

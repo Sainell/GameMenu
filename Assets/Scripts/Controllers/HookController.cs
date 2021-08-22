@@ -73,8 +73,11 @@ public class HookController : BaseController
 
     private void OnCatched(GameObject catchedItem, GameObject hook)
     {
-        _isCatchedSmth = true;
+        if (_isCatchedSmth)
+            return;
         _catchedItem = catchedItem;
+        catchedItem.transform.SetParent(hook.transform);
+        _isCatchedSmth = true;
         _interactableBehaviour.CatchedEvent -= OnCatched;
     }
 

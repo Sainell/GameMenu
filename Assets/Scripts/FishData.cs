@@ -13,11 +13,16 @@ public class FishData : ScriptableObject
     public int FishCatchedPoint;
     public int SpawnCountMin;
     public int SpawnCountMax;
-    
     private int _spawnCount;
 
-    public InteractableBehaviour InteractableBehaviour { get; set; }
 
+    public InteractableBehaviour InteractableBehaviour { get; set; }
+    public int CurrentSpawnCount { get; set; }
+
+    private void OnEnable()
+    {
+        _spawnCount = 0;
+    }
     public int GetSpawnCount()
     {
         if (_spawnCount == 0)
