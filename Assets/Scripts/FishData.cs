@@ -13,6 +13,7 @@ public class FishData : ScriptableObject
     public int FishCatchedPoint;
     public int SpawnCountMin;
     public int SpawnCountMax;
+
     private int _spawnCount;
 
 

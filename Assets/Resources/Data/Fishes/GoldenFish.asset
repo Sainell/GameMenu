@@ -19,4 +19,4 @@ MonoBehaviour:
   FishSpawnDelayMax: 6
   FishCatchedPoint: 5
   SpawnCountMin: 5
-  SpawnCountMax: 10
+  SpawnCountMax: 5
