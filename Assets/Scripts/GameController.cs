@@ -1,15 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    public static GameController Instance;
+
+    public WaterController WaterController;
+    public FishController FishController;
+    public HookController HookController;
+
     private List<BaseController> _controllers = new List<BaseController>();
+
     private void Awake()
     {
-        _controllers.Add(new WaterController());
-        _controllers.Add(new FishController());
-        _controllers.Add(new HookController());
+        Instance = this;
+        _controllers.Add(WaterController = new WaterController());
+        _controllers.Add(FishController = new FishController());
+        _controllers.Add(HookController = new HookController());
 
        foreach(var controller in _controllers)
         {

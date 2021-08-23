@@ -23,6 +23,8 @@ public class FishController : BaseController
         _fishesDic = new Dictionary<GameObject, FishData>();
         _fishesSpawnPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("FishSpawnPoint")); //todo
         _startSpawnPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("startSpawnPoint"));//todo
+        GameController.Instance.HookController.CatchedSmthEvent += OnCatch;
+        GameController.Instance.HookController.PulledOutEvent += OnPulledOut;
     }
 
     public override void Execute()
@@ -33,11 +35,8 @@ public class FishController : BaseController
     }
     public override void Dispose()
     {
-        foreach (var fish in _fishesDic)
-        {
-            if (_fishesDic != null)
-                fish.Key.GetComponent<InteractableBehaviour>().CatchedEvent -= OnCatched;
-        }
+        GameController.Instance.HookController.CatchedSmthEvent -= OnCatch;
+        GameController.Instance.HookController.PulledOutEvent -= OnPulledOut;
     }
 
 
@@ -45,7 +44,7 @@ public class FishController : BaseController
     {
         if (!_isFirstSpawn)
         {
-            if (!CheckIsPulledOut(_catchedFish))
+            if (!CheckIsPulledOut())
                 return;
         }
         foreach (var fish in _fishesData)
@@ -61,21 +60,15 @@ public class FishController : BaseController
                     --i;
                     return;
                 }
-                var spawnPoint = _startSpawnPoints[Random.Range(0, _startSpawnPoints.Count)];
+                var spawnPoint = GetSpawnPoint();
                 var newFish = GameObject.Instantiate(fish.FishPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
                 newFish.name = $"{fish.FishType}{newFish.GetInstanceID()}";
 
-                _fishesDic.Add(newFish, fish);
-                 newFish.GetComponent<InteractableBehaviour>().CatchedEvent += OnCatched;
-
-                if (_isCatched)
-                {
-                    _isCatched = false;
-                    _catchedFish = null;                   
-                }
+                _fishesDic.Add(newFish, fish);          
                 _spawnTime = 0;
             }
         }
+        _isPulledOut = false;
         _isFirstSpawn = false;
     }
 
@@ -85,6 +78,11 @@ public class FishController : BaseController
         {
             _spawnTime += Time.deltaTime;
         }
+    }
+
+    private GameObject GetSpawnPoint()
+    {
+        return _isFirstSpawn ? _startSpawnPoints[Random.Range(0, _startSpawnPoints.Count)] : _fishesSpawnPoints[Random.Range(0, _fishesSpawnPoints.Count)];
     }
 
     private bool CheskIsNeedSpawn(FishData fishData)
@@ -102,15 +100,19 @@ public class FishController : BaseController
         }
     }
 
-    private bool CheckIsPulledOut(GameObject fish)
+    private bool CheckIsPulledOut()
     {
-        _isPulledOut = fish == null ? false : fish.activeSelf == true ? false : true;
         if (!_isPulledOut)
         {
             _isNeedSpawnTimer = false;
             _spawnTime = 0;
         }
         return _isPulledOut;
+    }
+
+    private void OnPulledOut()
+    {
+        _isPulledOut = true;
     }
 
     private void MoveFish()
@@ -133,14 +135,9 @@ public class FishController : BaseController
         return true;
     }
 
-    private void OnCatched(GameObject collision, GameObject catchedFish)
+    private void OnCatch(GameObject catchedFish)
     {
-        if (!_isCatched && collision.tag.Equals("Hook"))
-        {
-            _isCatched = true;
-            _catchedFish = catchedFish;
-            _catchedFish.GetComponent<InteractableBehaviour>().CatchedEvent -= OnCatched;
-            _fishesDic.Remove(catchedFish);
-        }
+        _fishesDic.Remove(catchedFish);
     }
+
 }

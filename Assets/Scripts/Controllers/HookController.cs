@@ -1,9 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class HookController : BaseController
 {
+    public event Action<GameObject> CatchedSmthEvent;
+    public event Action PulledOutEvent;
+
     private GameObject _hook;
     private GameObject _fishRod;
     private Transform _rodEnd;
@@ -59,6 +63,7 @@ public class HookController : BaseController
                 _isCatchedSmth = false;
                 _catchedItem = null;
                 _interactableBehaviour.CatchedEvent += OnCatched;
+                PulledOutEvent?.Invoke();
             }
             _direction = Vector3.zero;
         }
@@ -75,8 +80,10 @@ public class HookController : BaseController
     {
         if (_isCatchedSmth)
             return;
+        CatchedSmthEvent?.Invoke(catchedItem);
+
         _catchedItem = catchedItem;
-        catchedItem.transform.SetParent(hook.transform);
+        _catchedItem.transform.SetParent(hook.transform);
         _isCatchedSmth = true;
         _interactableBehaviour.CatchedEvent -= OnCatched;
     }
