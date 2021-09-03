@@ -16,8 +16,6 @@ public class FishData : ScriptableObject
 
     private int _spawnCount;
 
-
-    public InteractableBehaviour InteractableBehaviour { get; set; }
     public int CurrentSpawnCount { get; set; }
 
     private void OnEnable()

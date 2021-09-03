@@ -7,18 +7,25 @@ public class GameController : MonoBehaviour
 {
     public static GameController Instance;
 
-    public WaterController WaterController;
-    public FishController FishController;
-    public HookController HookController;
+    public WaterController WaterController => _waterController;
+    public FishController FishController => _fishController;
+    public PlayerController PlayerController => _playerController;
+    public HookController HookController => _hookController;
+
+    private WaterController _waterController;
+    private FishController _fishController;
+    private PlayerController _playerController;
+    private HookController _hookController;
 
     private List<BaseController> _controllers = new List<BaseController>();
 
     private void Awake()
     {
         Instance = this;
-        _controllers.Add(WaterController = new WaterController());
-        _controllers.Add(FishController = new FishController());
-        _controllers.Add(HookController = new HookController());
+        _controllers.Add(_waterController = new WaterController());
+        _controllers.Add(_fishController = new FishController());
+        _controllers.Add(_playerController = new PlayerController());
+        _controllers.Add(_hookController = new HookController());
 
        foreach(var controller in _controllers)
         {

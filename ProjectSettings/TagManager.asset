@@ -8,6 +8,7 @@ TagManager:
   - FishSpawnPoint
   - Hook
   - startSpawnPoint
+  - PlayerSpawnPoint
   layers:
   - Default
   - TransparentFX
