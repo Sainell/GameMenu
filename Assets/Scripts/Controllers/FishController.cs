@@ -21,8 +21,8 @@ public class FishController : BaseController
     {
         _fishesData = new List<FishData>(Resources.LoadAll<FishData>($"Data/Fishes"));
         _fishesDic = new Dictionary<GameObject, FishData>();
-        _fishesSpawnPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("FishSpawnPoint")); //todo
-        _startSpawnPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("startSpawnPoint"));//todo
+        _fishesSpawnPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("FishSpawnPoint")); //todo spawncontroller 
+        _startSpawnPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("startSpawnPoint"));//todo spawncontroller 
         GameController.Instance.HookController.CatchedSmthEvent += OnCatch;
         GameController.Instance.HookController.PulledOutEvent += OnPulledOut;
     }

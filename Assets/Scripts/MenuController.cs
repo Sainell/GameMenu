@@ -19,20 +19,33 @@ public class MenuController : MonoBehaviour
     [SerializeField] public GameObject GameUI;
     [SerializeField] public GameObject Menu;
 
+    [SerializeField] public Button PauseButton;
+    [SerializeField] public GameObject PauseMenu;
+    [SerializeField] public Button ReturnPlayButton;
+    [SerializeField] public Button BackInMainButton;
+
+
     private void Awake()
     {
         PlayButton.onClick.AddListener(PlayGame);
         SettingsButton.onClick.AddListener(OpenSettingsMenu);
         ExitButton.onClick.AddListener(ExitGame);
         BackButton.onClick.AddListener(Back);
+        PauseButton.onClick.AddListener(OpenPauseMenu);
+        ReturnPlayButton.onClick.AddListener(ReturnToPlay);
+        BackInMainButton.onClick.AddListener(OpenMainMenu);
+
+        //  Time.timeScale = 0;
+        OpenMainMenu();
     }
 
 
     private void PlayGame()
     {
+        Time.timeScale = 1;
         Game.SetActive(true);
         GameUI.SetActive(true);
-        Menu.SetActive(false);
+        MainMenu.SetActive(false);
     }
 
     private void OpenSettingsMenu()
@@ -50,5 +63,24 @@ public class MenuController : MonoBehaviour
     {
         MainMenu.SetActive(true);
         SettingsMenu.SetActive(false);
+    }
+
+    private void OpenPauseMenu()
+    {
+        Time.timeScale = 0;
+        PauseMenu.SetActive(true);
+    }
+    
+    private void ReturnToPlay()
+    {
+        Time.timeScale = 1;
+        PauseMenu.SetActive(false);
+    }
+    private void OpenMainMenu()
+    {
+        PauseMenu.SetActive(false);
+        Game.SetActive(false);
+        GameUI.SetActive(false);
+        MainMenu.SetActive(true);
     }
 }

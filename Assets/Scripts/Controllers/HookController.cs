@@ -21,7 +21,7 @@ public class HookController : BaseController
     private InteractableBehaviour _interactableBehaviour;
     public override void Initialise()
     {
-        _hook = GameObject.Find("hook"); //
+        _hook = GameObject.Find("hook"); // 
         _fishRod = GameObject.Find("fish-rod"); //
         _rodEnd = _fishRod.transform.GetChild(0);
         _lineRenderer = _hook.GetComponent<LineRenderer>();
