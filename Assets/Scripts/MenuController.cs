@@ -23,6 +23,13 @@ public class MenuController : MonoBehaviour
     [SerializeField] public GameObject PauseMenu;
     [SerializeField] public Button ReturnPlayButton;
     [SerializeField] public Button BackInMainButton;
+    [SerializeField] public Button NextLevelButton;
+    [SerializeField] public Button RetryButton;
+
+    [SerializeField] public GameObject TimeScale;
+    [SerializeField] public GameObject ScoreScale;
+
+
 
 
     private void Awake()
@@ -31,7 +38,7 @@ public class MenuController : MonoBehaviour
         SettingsButton.onClick.AddListener(OpenSettingsMenu);
         ExitButton.onClick.AddListener(ExitGame);
         BackButton.onClick.AddListener(Back);
-        PauseButton.onClick.AddListener(OpenPauseMenu);
+        PauseButton.onClick.AddListener(() => OpenPauseMenu(false,false));
         ReturnPlayButton.onClick.AddListener(ReturnToPlay);
         BackInMainButton.onClick.AddListener(OpenMainMenu);
 
@@ -65,10 +72,28 @@ public class MenuController : MonoBehaviour
         SettingsMenu.SetActive(false);
     }
 
-    private void OpenPauseMenu()
+    public void OpenPauseMenu(bool isWin = false, bool isFail = false)
     {
         Time.timeScale = 0;
         PauseMenu.SetActive(true);
+        if (isWin)
+        {
+            NextLevelButton.gameObject.SetActive(true);
+            PlayButton.gameObject.SetActive(false);
+            NextLevelButton.onClick.AddListener(StartNextLevel);
+        }
+        else if (isFail)
+        {
+            RetryButton.gameObject.SetActive(true);
+            PlayButton.gameObject.SetActive(false);
+            RetryButton.onClick.AddListener(RetryLevel);
+        }
+        else
+        {
+            NextLevelButton.gameObject.SetActive(false);
+            RetryButton.gameObject.SetActive(false);
+            PlayButton.gameObject.SetActive(true);
+        }
     }
     
     private void ReturnToPlay()
@@ -82,5 +107,15 @@ public class MenuController : MonoBehaviour
         Game.SetActive(false);
         GameUI.SetActive(false);
         MainMenu.SetActive(true);
+    }
+
+    private void StartNextLevel()
+    {
+
+    }
+
+    private void RetryLevel()
+    {
+
     }
 }

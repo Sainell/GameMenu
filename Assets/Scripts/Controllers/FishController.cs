@@ -1,20 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class FishController : BaseController
 {
+    public event Action<int> CatchedData;
     private List<FishData> _fishesData;
     private List<GameObject> _fishesSpawnPoints;
     private List<GameObject> _startSpawnPoints;
     private Dictionary<GameObject, FishData> _fishesDic;
     private float _spawnTime;
     private bool _isPulledOut;
-    private bool _isCatched;
-    private GameObject _catchedFish;
     private bool _isFirstSpawn = true;
     private bool _isNeedSpawnTimer;
+    private int _catchedFishPoint;
 
 
     public override void Initialise()
@@ -113,6 +115,8 @@ public class FishController : BaseController
     private void OnPulledOut()
     {
         _isPulledOut = true;
+        CatchedData?.Invoke(_catchedFishPoint);
+        _catchedFishPoint = 0;
     }
 
     private void MoveFish()
@@ -137,6 +141,7 @@ public class FishController : BaseController
 
     private void OnCatch(GameObject catchedFish)
     {
+        _catchedFishPoint = _fishesDic[catchedFish].FishCatchedPoint;
         _fishesDic.Remove(catchedFish);
     }
 

@@ -9,6 +9,8 @@ TagManager:
   - Hook
   - startSpawnPoint
   - PlayerSpawnPoint
+  - TimeScale
+  - ScoreScale
   layers:
   - Default
   - TransparentFX
