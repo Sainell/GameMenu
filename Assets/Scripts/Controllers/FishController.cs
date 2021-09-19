@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 public class FishController : BaseController
 {
     public event Action<int> CatchedData;
-    private List<FishData> _fishesData;
+    private List<FishItem> _fishesData;
     private List<GameObject> _fishesSpawnPoints;
     private List<GameObject> _startSpawnPoints;
     private Dictionary<GameObject, FishData> _fishesDic;
@@ -19,16 +19,16 @@ public class FishController : BaseController
     private int _catchedFishPoint;
 
 
-    public override void Initialise()
+    public override void Initialise(LevelData levelData)
     {
-        _fishesData = new List<FishData>(Resources.LoadAll<FishData>($"Data/Fishes"));
+        _fishesData = levelData.FishList;// new List<FishData>(Resources.LoadAll<FishData>($"Data/Fishes"));
         _fishesDic = new Dictionary<GameObject, FishData>();
         _fishesSpawnPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("FishSpawnPoint")); //todo spawncontroller 
         _startSpawnPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("startSpawnPoint"));//todo spawncontroller 
         GameController.Instance.HookController.CatchedSmthEvent += OnCatch;
         GameController.Instance.HookController.PulledOutEvent += OnPulledOut;
         _isFirstSpawn = true;
-        base.Initialise();
+        base.Initialise(levelData);
     }
 
     public override void Execute()
@@ -66,22 +66,22 @@ public class FishController : BaseController
         }
         foreach (var fish in _fishesData)
         {
-            if (!CheskIsNeedSpawn(fish))
+            if (!CheskIsNeedSpawn(fish.FishData))
             {
                 continue;
             }
-            for (int i = 0; i < fish.CurrentSpawnCount; i++)
+            for (int i = 0; i < fish.Count; i++)
             {
-                if (!_isFirstSpawn && _spawnTime < fish.GetRandomSpawnDelayTime())
+                if (!_isFirstSpawn && _spawnTime < fish.FishData.GetRandomSpawnDelayTime())
                 {                   
                     --i;
                     return;
                 }
                 var spawnPoint = GetSpawnPoint();
-                var newFish = GameObject.Instantiate(fish.FishPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
-                newFish.name = $"{fish.FishType}{newFish.GetInstanceID()}";
+                var newFish = GameObject.Instantiate(fish.FishData.Prefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
+                newFish.name = $"{fish.FishData.FishType}{newFish.GetInstanceID()}";
 
-                _fishesDic.Add(newFish, fish);          
+                _fishesDic.Add(newFish, fish.FishData);          
                 _spawnTime = 0;
             }
         }
@@ -139,7 +139,7 @@ public class FishController : BaseController
         foreach (var fish in _fishesDic)
         {
             if (CheckFishOutOfScreen(fish.Key))
-                fish.Key.transform.Translate(Vector3.right * _fishesDic[fish.Key].FishSpeed * Time.deltaTime);
+                fish.Key.transform.Translate(Vector3.right * _fishesDic[fish.Key].Speed * Time.deltaTime);
         }
     }
 
@@ -156,7 +156,7 @@ public class FishController : BaseController
 
     private void OnCatch(GameObject catchedFish)
     {
-        _catchedFishPoint = _fishesDic[catchedFish].FishCatchedPoint;
+        _catchedFishPoint = _fishesDic[catchedFish].CatchedPoint;
         _fishesDic.Remove(catchedFish);
     }
 

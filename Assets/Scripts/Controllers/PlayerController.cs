@@ -7,12 +7,12 @@ public class PlayerController : BaseController
     private PlayerData _playerData;
     private List<GameObject> _playerSpawnPoints;
     private GameObject _player;
-    public override void Initialise()
+    public override void Initialise(LevelData levelData)
     {
         _playerData = Resources.Load<PlayerData>($"Data/PlayerData");
         _playerSpawnPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("PlayerSpawnPoint")); //todo spawncontroller 
         PlayerSpawn();
-        base.Initialise();
+        base.Initialise(levelData);
     }
 
     public override void Execute()

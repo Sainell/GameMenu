@@ -4,10 +4,12 @@ using UnityEngine;
 
 public abstract class BaseController
 {
-    public bool IsInitialised;
-    public virtual void Initialise()
+    protected bool IsInitialised;
+    protected LevelData LevelData;
+    public virtual void Initialise(LevelData levelData)
     {
         IsInitialised = true;
+        LevelData = levelData;
     }
 
     public abstract void Execute();

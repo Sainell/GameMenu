@@ -19,7 +19,7 @@ public class HookController : BaseController
     private bool _isCatchedSmth;
     private GameObject _catchedItem;
     private InteractableBehaviour _interactableBehaviour;
-    public override void Initialise()
+    public override void Initialise(LevelData levelData)
     {
         _hook = GameObject.Find("hook"); // 
         _fishRod = GameObject.Find("fish-rod"); //
@@ -27,7 +27,7 @@ public class HookController : BaseController
         _lineRenderer = _hook.GetComponent<LineRenderer>();
         _interactableBehaviour = _hook.GetComponent<InteractableBehaviour>();
         _interactableBehaviour.CatchedEvent += OnCatched;
-        base.Initialise();
+        base.Initialise(levelData);
     }
 
     public override void Execute()

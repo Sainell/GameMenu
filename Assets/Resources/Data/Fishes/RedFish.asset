@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 224bfb2db7575eb42a52b32d891a2b56, type: 3}
   m_Name: RedFish
   m_EditorClassIdentifier: 
+  _prefab: {fileID: 8585121596594742349, guid: bf5d3d273a317dc48a8d3b2d6f6d51a0, type: 3}
+  _speed: 7
+  _spawnDelayMin: 10
+  _spawnDelayMax: 15
+  _catchedPoint: 10
   FishType: 2
-  FishPrefab: {fileID: 8585121596594742349, guid: bf5d3d273a317dc48a8d3b2d6f6d51a0, type: 3}
-  FishSpeed: 5
-  FishSpawnDelayMin: 3
-  FishSpawnDelayMax: 7
-  FishCatchedPoint: 10
   SpawnCountMin: 5
   SpawnCountMax: 5

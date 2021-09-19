@@ -7,14 +7,14 @@ public class WaterController : BaseController
     private GameObject _waterPrefab;
     private float _waterSpriteWidth;
     private List<Transform> _waterParts;
-    public override void Initialise()
+    public override void Initialise(LevelData levelData)
     {
         _waterPrefab = GameObject.Find("water"); // TODO: Data.Prefab; 
         _waterSpriteWidth = _waterPrefab.GetComponentInChildren<SpriteRenderer>().bounds.size.x;
         _waterParts = new List<Transform>();
         _waterParts.Add(_waterPrefab.transform.GetChild(0).transform);
         _waterParts.Add(_waterPrefab.transform.GetChild(1).transform);
-        base.Initialise();
+        base.Initialise(levelData);
     }
 
     public override void Execute()

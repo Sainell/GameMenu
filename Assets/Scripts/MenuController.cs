@@ -7,7 +7,7 @@ using DG.Tweening;
 
 public class MenuController : MonoBehaviour
 {
-    public event Action LoadGameLevel; // send LevelData for all controllers if need
+    public event Action<LevelData> LoadGameLevel; // send LevelData for all controllers if need
     public event Action ClearGameLevel;
 
     [SerializeField] public GameObject MainMenu;
@@ -40,7 +40,7 @@ public class MenuController : MonoBehaviour
     private void Awake()
     {
         _gameController.MenuController = this;
-        StartGameButton.onClick.AddListener(PlayGame);
+        StartGameButton.onClick.AddListener(() => PlayGame(false));
         SettingsButton.onClick.AddListener(OpenSettingsMenu);
         ExitButton.onClick.AddListener(ExitGame);
         BackButton.onClick.AddListener(Back);
@@ -56,7 +56,7 @@ public class MenuController : MonoBehaviour
         OpenMainMenu();
     }
 
-    private void PlayGame()
+    private void PlayGame(bool isWinLevel = false)
     {
         ClearGameLevel?.Invoke();
         Time.timeScale = 1;
@@ -65,7 +65,8 @@ public class MenuController : MonoBehaviour
         MainMenu.SetActive(false);
         PauseMenu.SetActive(false);
 
-        DOVirtual.DelayedCall(0.1f, () => LoadGameLevel?.Invoke());
+        var levelData = isWinLevel ? _gameController.LevelController.GetNextLevelData() : _gameController.LevelController.GetCurrentLevelData();
+        DOVirtual.DelayedCall(0.1f, () => LoadGameLevel?.Invoke(levelData));
         
         
     }
@@ -116,7 +117,6 @@ public class MenuController : MonoBehaviour
     }
     private void OpenMainMenu()
     {
-       // ClearGameLevel?.Invoke();
         PauseMenu.SetActive(false);
         Game.SetActive(false);
         GameUI.SetActive(false);
@@ -125,11 +125,11 @@ public class MenuController : MonoBehaviour
 
     private void StartNextLevel()
     {
-        PlayGame();
+        PlayGame(true);
     }
 
     private void RetryLevel()
     {
-        PlayGame();
+        PlayGame(false);
     }
 }

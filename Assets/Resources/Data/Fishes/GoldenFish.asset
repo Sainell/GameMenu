@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 224bfb2db7575eb42a52b32d891a2b56, type: 3}
   m_Name: GoldenFish
   m_EditorClassIdentifier: 
+  _prefab: {fileID: 8585121596594742349, guid: 1b9a2cb8e2d5c54448ca4d6e8e0533df, type: 3}
+  _speed: 3
+  _spawnDelayMin: 5
+  _spawnDelayMax: 10
+  _catchedPoint: 5
   FishType: 1
-  FishPrefab: {fileID: 8585121596594742349, guid: 1b9a2cb8e2d5c54448ca4d6e8e0533df, type: 3}
-  FishSpeed: 3
-  FishSpawnDelayMin: 2
-  FishSpawnDelayMax: 6
-  FishCatchedPoint: 5
   SpawnCountMin: 5
   SpawnCountMax: 5

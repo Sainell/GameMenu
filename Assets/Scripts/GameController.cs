@@ -13,12 +13,14 @@ public class GameController : MonoBehaviour
     public PlayerController PlayerController => _playerController;
     public HookController HookController => _hookController;
     public ScoreController ScoreController => _scoreController;
+    public LevelController LevelController => _levelController;
 
     private WaterController _waterController;
     private FishController _fishController;
     private PlayerController _playerController;
     private HookController _hookController;
     private ScoreController _scoreController;
+    private LevelController _levelController;
 
     private List<BaseController> _controllers = new List<BaseController>();
 
@@ -30,6 +32,8 @@ public class GameController : MonoBehaviour
         _controllers.Add(_playerController = new PlayerController());
         _controllers.Add(_hookController = new HookController());
         _controllers.Add(_scoreController = new ScoreController());
+        _levelController = new LevelController();
+        _levelController.Initialise(null);
 
         MenuController.LoadGameLevel += Initialise;
         MenuController.ClearGameLevel += Clear;
@@ -53,11 +57,11 @@ public class GameController : MonoBehaviour
         MenuController.ClearGameLevel -= Clear;
     }
 
-    private void Initialise()
+    private void Initialise(LevelData levelData)
     {
         foreach (var controller in _controllers)
         {
-            controller.Initialise();
+            controller.Initialise(levelData);
         }
     }
     private void Clear()
