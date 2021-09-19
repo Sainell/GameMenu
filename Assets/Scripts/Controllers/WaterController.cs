@@ -24,6 +24,10 @@ public class WaterController : BaseController
     {
         
     }
+    public override void Clear()
+    {
+
+    }
 
     private void WaterMoving()
     {

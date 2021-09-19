@@ -38,14 +38,30 @@ public class HookController : BaseController
             else
                 _isFishing = false;
         }
-        HookMove();
-        SetRodLine();
+        if (_hook != null)
+        {
+            HookMove();
+            SetRodLine();
+        }
     }
     public override void Dispose()
     {
-        _interactableBehaviour.CatchedEvent -= OnCatched;
+        Clear();
     }
 
+    public override void Clear()
+    {
+        if (_interactableBehaviour != null)
+        {
+            _interactableBehaviour.CatchedEvent -= OnCatched;
+            _isFishing = false;
+            _hook = null;
+            _fishRod = null;
+            _rodEnd = null;
+            _lineRenderer = null;
+            _interactableBehaviour = null;
+        }
+    }
     private void HookMove()
     {
         if (_isFishing && !_isCatchedSmth && _hook.transform.position.y > -4f)

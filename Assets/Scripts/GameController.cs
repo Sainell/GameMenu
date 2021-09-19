@@ -7,13 +7,12 @@ public class GameController : MonoBehaviour
 {
     public static GameController Instance;
 
+    public MenuController MenuController { get; set; }
     public WaterController WaterController => _waterController;
     public FishController FishController => _fishController;
     public PlayerController PlayerController => _playerController;
     public HookController HookController => _hookController;
-
     public ScoreController ScoreController => _scoreController;
-
 
     private WaterController _waterController;
     private FishController _fishController;
@@ -32,10 +31,8 @@ public class GameController : MonoBehaviour
         _controllers.Add(_hookController = new HookController());
         _controllers.Add(_scoreController = new ScoreController());
 
-       foreach(var controller in _controllers)
-        {
-            controller.Initialise();
-        }    
+        MenuController.LoadGameLevel += Initialise;
+        MenuController.ClearGameLevel += Clear;
     }
 
     private void Update()
@@ -51,6 +48,23 @@ public class GameController : MonoBehaviour
         foreach (var controller in _controllers)
         {
             controller.Dispose();
+        }
+        MenuController.LoadGameLevel -= Initialise;
+        MenuController.ClearGameLevel -= Clear;
+    }
+
+    private void Initialise()
+    {
+        foreach (var controller in _controllers)
+        {
+            controller.Initialise();
+        }
+    }
+    private void Clear()
+    {
+        foreach (var controller in _controllers)
+        {
+            controller.Clear();
         }
     }
 }

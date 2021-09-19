@@ -10,4 +10,7 @@ public abstract class BaseController
 
     public abstract void Dispose();
 
+    public abstract void Clear();
+
+
 }

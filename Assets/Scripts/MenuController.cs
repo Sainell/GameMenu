@@ -5,10 +5,13 @@ using UnityEngine.EventSystems;
 
 public class MenuController : MonoBehaviour
 {
+    public event Action LoadGameLevel; // send LevelData for all controllers if need
+    public event Action ClearGameLevel;
+
     [SerializeField] public GameObject MainMenu;
     [SerializeField] public GameObject SettingsMenu;
 
-    [SerializeField] public Button PlayButton;
+    [SerializeField] public Button StartGameButton;
     [SerializeField] public Button SettingsButton;
     [SerializeField] public Button ExitButton;
     [SerializeField] public Button BackButton;
@@ -29,30 +32,39 @@ public class MenuController : MonoBehaviour
     [SerializeField] public GameObject TimeScale;
     [SerializeField] public GameObject ScoreScale;
 
-
+    [SerializeField] private GameController _gameController;
 
 
     private void Awake()
     {
-        PlayButton.onClick.AddListener(PlayGame);
+        _gameController.MenuController = this;
+        StartGameButton.onClick.AddListener(PlayGame);
         SettingsButton.onClick.AddListener(OpenSettingsMenu);
         ExitButton.onClick.AddListener(ExitGame);
         BackButton.onClick.AddListener(Back);
         PauseButton.onClick.AddListener(() => OpenPauseMenu(false,false));
         ReturnPlayButton.onClick.AddListener(ReturnToPlay);
         BackInMainButton.onClick.AddListener(OpenMainMenu);
+        RetryButton.onClick.AddListener(RetryLevel);
+        NextLevelButton.onClick.AddListener(StartNextLevel);
+    }
 
-        //  Time.timeScale = 0;
+    private void Start()
+    {
         OpenMainMenu();
     }
 
-
     private void PlayGame()
     {
+        ClearGameLevel?.Invoke();
         Time.timeScale = 1;
         Game.SetActive(true);
         GameUI.SetActive(true);
         MainMenu.SetActive(false);
+        PauseMenu.SetActive(false);
+
+        LoadGameLevel?.Invoke();
+        
     }
 
     private void OpenSettingsMenu()
@@ -79,20 +91,18 @@ public class MenuController : MonoBehaviour
         if (isWin)
         {
             NextLevelButton.gameObject.SetActive(true);
-            PlayButton.gameObject.SetActive(false);
-            NextLevelButton.onClick.AddListener(StartNextLevel);
+            ReturnPlayButton.gameObject.SetActive(false);
         }
         else if (isFail)
         {
             RetryButton.gameObject.SetActive(true);
-            PlayButton.gameObject.SetActive(false);
-            RetryButton.onClick.AddListener(RetryLevel);
+            ReturnPlayButton.gameObject.SetActive(false);
         }
         else
         {
             NextLevelButton.gameObject.SetActive(false);
             RetryButton.gameObject.SetActive(false);
-            PlayButton.gameObject.SetActive(true);
+            ReturnPlayButton.gameObject.SetActive(true);
         }
     }
     
@@ -103,6 +113,7 @@ public class MenuController : MonoBehaviour
     }
     private void OpenMainMenu()
     {
+       // ClearGameLevel?.Invoke();
         PauseMenu.SetActive(false);
         Game.SetActive(false);
         GameUI.SetActive(false);
@@ -111,11 +122,11 @@ public class MenuController : MonoBehaviour
 
     private void StartNextLevel()
     {
-
+        PlayGame();
     }
 
     private void RetryLevel()
     {
-
+        PlayGame();
     }
 }

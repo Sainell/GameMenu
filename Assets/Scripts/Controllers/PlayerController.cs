@@ -6,6 +6,7 @@ public class PlayerController : BaseController
 {
     private PlayerData _playerData;
     private List<GameObject> _playerSpawnPoints;
+    private GameObject _player;
     public override void Initialise()
     {
         _playerData = Resources.Load<PlayerData>($"Data/PlayerData");
@@ -22,7 +23,10 @@ public class PlayerController : BaseController
     {
 
     }
-
+    public override void Clear()
+    {
+        GameObject.Destroy(_player);
+    }
     private Transform GetSpawnPoint()
     {
         return _playerSpawnPoints[Random.Range(0, _playerSpawnPoints.Count)].transform;
@@ -31,8 +35,8 @@ public class PlayerController : BaseController
     private void PlayerSpawn()
     {
         var spawnPoint = GetSpawnPoint();
-        var player = GameObject.Instantiate(_playerData.PlayerPrefab, spawnPoint.position, Quaternion.identity);
-        var playerModel = player.transform.GetChild(0);
+        _player = GameObject.Instantiate(_playerData.PlayerPrefab, spawnPoint.position, Quaternion.identity);
+        var playerModel = _player.transform.GetChild(0);
         playerModel.rotation = spawnPoint.rotation;
     }
 }

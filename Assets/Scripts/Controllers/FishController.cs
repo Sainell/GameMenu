@@ -27,6 +27,7 @@ public class FishController : BaseController
         _startSpawnPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("startSpawnPoint"));//todo spawncontroller 
         GameController.Instance.HookController.CatchedSmthEvent += OnCatch;
         GameController.Instance.HookController.PulledOutEvent += OnPulledOut;
+        _isFirstSpawn = true;
     }
 
     public override void Execute()
@@ -37,10 +38,21 @@ public class FishController : BaseController
     }
     public override void Dispose()
     {
+        Clear();
+    }
+    public override void Clear()
+    {
         GameController.Instance.HookController.CatchedSmthEvent -= OnCatch;
         GameController.Instance.HookController.PulledOutEvent -= OnPulledOut;
+        if (_fishesDic != null && _fishesDic.Count != 0)
+        {
+            foreach (var fish in _fishesDic)
+            {
+                GameObject.Destroy(fish.Key);
+            }
+            _fishesDic.Clear();
+        }
     }
-
 
     private void FishesSpawn()
     {
