@@ -4,7 +4,11 @@ using UnityEngine;
 
 public abstract class BaseController
 {
-    public abstract void Initialise();
+    public bool IsInitialised;
+    public virtual void Initialise()
+    {
+        IsInitialised = true;
+    }
 
     public abstract void Execute();
 

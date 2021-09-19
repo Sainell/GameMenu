@@ -14,10 +14,13 @@ public class WaterController : BaseController
         _waterParts = new List<Transform>();
         _waterParts.Add(_waterPrefab.transform.GetChild(0).transform);
         _waterParts.Add(_waterPrefab.transform.GetChild(1).transform);
+        base.Initialise();
     }
 
     public override void Execute()
     {
+        if (!IsInitialised)
+            return;
         WaterMoving();
     }
     public override void Dispose()

@@ -12,11 +12,13 @@ public class PlayerController : BaseController
         _playerData = Resources.Load<PlayerData>($"Data/PlayerData");
         _playerSpawnPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("PlayerSpawnPoint")); //todo spawncontroller 
         PlayerSpawn();
+        base.Initialise();
     }
 
     public override void Execute()
     {
-
+        if (!IsInitialised)
+            return;
     }
 
     public override void Dispose()

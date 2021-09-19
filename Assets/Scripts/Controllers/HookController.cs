@@ -27,10 +27,13 @@ public class HookController : BaseController
         _lineRenderer = _hook.GetComponent<LineRenderer>();
         _interactableBehaviour = _hook.GetComponent<InteractableBehaviour>();
         _interactableBehaviour.CatchedEvent += OnCatched;
+        base.Initialise();
     }
 
     public override void Execute()
     {
+        if (!IsInitialised)
+            return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (!_isFishing)

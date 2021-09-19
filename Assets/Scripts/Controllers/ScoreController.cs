@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ScoreController : BaseController
 {
     private const float TEST_NEEDED_SCORE = 30;
-    private const float TEST_LEVEL_TIME = 3;
+    private const float TEST_LEVEL_TIME = 30;
     private float _currentScore;
     private float _currentTime;
     private Image _timeScale;
@@ -16,18 +16,21 @@ public class ScoreController : BaseController
 
     public override void Initialise()
     {
-        _menuController = GameObject.Find("Menu").GetComponent<MenuController>(); //
-        _timeScale = _menuController.TimeScale.GetComponent<Image>();//
+        _menuController = GameController.Instance.MenuController;
+        _timeScale = _menuController.TimeScale.GetComponent<Image>();
+        _scoreScale = _menuController.ScoreScale.GetComponent<Image>();
 
-        _scoreScale = _menuController.ScoreScale.GetComponent<Image>();//
         _currentScore = 0;
         _scoreScale.fillAmount = _currentScore;
         _currentTime = TEST_LEVEL_TIME;
         GameController.Instance.FishController.CatchedData += OnCatch;
+        base.Initialise();
     }
 
     public override void Execute()
     {
+        if (!IsInitialised)
+            return;
         Timer();
     }
 

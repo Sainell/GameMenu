@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using DG;
+using DG.Tweening;
 
 public class MenuController : MonoBehaviour
 {
@@ -63,7 +65,8 @@ public class MenuController : MonoBehaviour
         MainMenu.SetActive(false);
         PauseMenu.SetActive(false);
 
-        LoadGameLevel?.Invoke();
+        DOVirtual.DelayedCall(0.1f, () => LoadGameLevel?.Invoke());
+        
         
     }
 

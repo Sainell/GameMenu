@@ -28,10 +28,13 @@ public class FishController : BaseController
         GameController.Instance.HookController.CatchedSmthEvent += OnCatch;
         GameController.Instance.HookController.PulledOutEvent += OnPulledOut;
         _isFirstSpawn = true;
+        base.Initialise();
     }
 
     public override void Execute()
     {
+        if (!IsInitialised)
+            return;
         FishesSpawn();
         MoveFish();
         SpawnTimer();
