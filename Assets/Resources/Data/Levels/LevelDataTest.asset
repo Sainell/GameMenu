@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: LevelDataTest
   m_EditorClassIdentifier: 
   _levelId: 0
-  _levelTime: 30
-  _levelWinScore: 2
+  _levelTime: 60
+  _levelWinScore: 30
   _fishList:
   - _fishData: {fileID: 11400000, guid: fc7f106824a877e4a99f9205fcd2fef0, type: 2}
-    _count: 25
+    _count: 3
+  - _fishData: {fileID: 11400000, guid: 6fb96581b8e62da41b3de41c8f3c0f08, type: 2}
+    _count: 3

@@ -8,5 +8,6 @@ public class FishItem
     [SerializeField] private int _count;
 
     public FishData FishData => _fishData;
+    public FishType FishType => _fishData.FishType;
     public int Count => _count;
 }

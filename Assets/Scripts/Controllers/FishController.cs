@@ -21,7 +21,7 @@ public class FishController : BaseController
 
     public override void Initialise(LevelData levelData)
     {
-        _fishesData = levelData.FishList;// new List<FishData>(Resources.LoadAll<FishData>($"Data/Fishes"));
+        _fishesData = levelData.FishList;
         _fishesDic = new Dictionary<GameObject, FishData>();
         _fishesSpawnPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("FishSpawnPoint")); //todo spawncontroller 
         _startSpawnPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("startSpawnPoint"));//todo spawncontroller 
@@ -66,7 +66,7 @@ public class FishController : BaseController
         }
         foreach (var fish in _fishesData)
         {
-            if (!CheskIsNeedSpawn(fish.FishData))
+            if (!CheskIsNeedSpawn(fish))
             {
                 continue;
             }
@@ -102,16 +102,16 @@ public class FishController : BaseController
         return _isFirstSpawn ? _startSpawnPoints[Random.Range(0, _startSpawnPoints.Count)] : _fishesSpawnPoints[Random.Range(0, _fishesSpawnPoints.Count)];
     }
 
-    private bool CheskIsNeedSpawn(FishData fishData)
+    private bool CheskIsNeedSpawn(FishItem fishItem)
     {
-        var dataCount = _fishesDic.Count(x => x.Value.Equals(fishData));
-        if (dataCount != 0 && dataCount >= fishData.GetSpawnCount())
+        
+        var dataCount = _fishesDic.Count(x => x.Value.FishType.Equals(fishItem.FishType));
+        if (dataCount != 0 && dataCount >= fishItem.Count)
         {
             return false;
         }
         else
         {
-            fishData.CurrentSpawnCount = fishData.GetSpawnCount() - dataCount;
             _isNeedSpawnTimer = true;
             return true;
         }
