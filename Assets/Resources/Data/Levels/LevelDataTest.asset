@@ -15,6 +15,7 @@ MonoBehaviour:
   _levelId: 0
   _levelTime: 60
   _levelWinScore: 30
+  _waterPartPrefab: {fileID: 7465800663342885043, guid: 516c9c095935a434aabe04566eab058c, type: 3}
   _fishList:
   - _fishData: {fileID: 11400000, guid: fc7f106824a877e4a99f9205fcd2fef0, type: 2}
     _count: 3

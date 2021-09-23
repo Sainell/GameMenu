@@ -7,6 +7,8 @@ using Random = UnityEngine.Random;
 
 public class FishController : BaseController
 {
+    public const float CAMERA_BORDER_OFFSET = 1.3f;
+
     public event Action<int> CatchedData;
     private List<FishItem> _fishesData;
     private List<GameObject> _fishesSpawnPoints;
@@ -17,6 +19,8 @@ public class FishController : BaseController
     private bool _isFirstSpawn = true;
     private bool _isNeedSpawnTimer;
     private int _catchedFishPoint;
+
+    private float _cameraWidth => GameController.Instance.CameraController.CameraWidth;
 
 
     public override void Initialise(LevelData levelData)
@@ -145,7 +149,7 @@ public class FishController : BaseController
 
     private bool CheckFishOutOfScreen(GameObject fish)
     {
-        if (Mathf.Abs(fish.transform.position.x) > 15f)
+        if (Mathf.Abs(fish.transform.position.x) > _cameraWidth/CAMERA_BORDER_OFFSET)
         {
             var spawnPoint = _fishesSpawnPoints[Random.Range(0, _fishesSpawnPoints.Count)];
             fish.transform.SetPositionAndRotation(spawnPoint.transform.position, spawnPoint.transform.rotation);

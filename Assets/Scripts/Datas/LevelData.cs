@@ -9,10 +9,13 @@ public class LevelData : ScriptableObject
     [SerializeField] private float _levelTime;
     [SerializeField] private int _levelWinScore;
 
+    [SerializeField] private GameObject _waterPartPrefab;
+
     [SerializeField] private List<FishItem> _fishList;
 
     public int LevelId => _levelId;
     public float LevelTime => _levelTime;
     public int LevelWinScore => _levelWinScore;
     public List<FishItem> FishList => _fishList;
+    public GameObject WaterPartPrefab => _waterPartPrefab;
 }

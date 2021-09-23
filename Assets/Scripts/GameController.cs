@@ -14,6 +14,8 @@ public class GameController : MonoBehaviour
     public HookController HookController => _hookController;
     public ScoreController ScoreController => _scoreController;
     public LevelController LevelController => _levelController;
+    public CameraController CameraController => _cameraController;
+    
 
     private WaterController _waterController;
     private FishController _fishController;
@@ -21,12 +23,15 @@ public class GameController : MonoBehaviour
     private HookController _hookController;
     private ScoreController _scoreController;
     private LevelController _levelController;
+    private CameraController _cameraController;
 
     private List<BaseController> _controllers = new List<BaseController>();
 
     private void Awake()
     {
         Instance = this;
+
+        _controllers.Add(_cameraController = new CameraController());
         _controllers.Add(_waterController = new WaterController());
         _controllers.Add(_fishController = new FishController());
         _controllers.Add(_playerController = new PlayerController());
@@ -34,6 +39,7 @@ public class GameController : MonoBehaviour
         _controllers.Add(_scoreController = new ScoreController());
         _levelController = new LevelController();
         _levelController.Initialise(null);
+        
 
         MenuController.LoadGameLevel += Initialise;
         MenuController.ClearGameLevel += Clear;
