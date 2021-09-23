@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class WaterController : BaseController
 {
-    private GameObject _waterPrefab;
+    private const float WATER_Y_OFFSET = -1f;
     private GameObject _waterPartPrefab;
     private float _waterSpriteWidth;
     private List<Transform> _waterParts;
     public override void Initialise(LevelData levelData)
     {
-        _waterPrefab = GameObject.Find("water"); // TODO: Data.Prefab; 
         _waterPartPrefab = levelData.WaterPartPrefab;
         _waterSpriteWidth = _waterPartPrefab.GetComponent<SpriteRenderer>().bounds.size.x;
         _waterParts = new List<Transform>();
@@ -38,7 +37,7 @@ public class WaterController : BaseController
         foreach(var water in _waterParts)
         {
             water.Translate(Vector3.right * Time.deltaTime);
-            if(water.position.x > _waterPrefab.transform.position.x+_waterSpriteWidth)
+            if(water.position.x > _waterSpriteWidth)
             {
                 water.position -= new Vector3(_waterSpriteWidth * _waterParts.Count, 0, 0);
             }
@@ -49,7 +48,7 @@ public class WaterController : BaseController
         for (int i = 0; i < CalculateWaterPartCount(); i++)
         {
             var waterPart = GameObject.Instantiate(_waterPartPrefab,
-                   _waterPrefab.transform.position - new Vector3(i * _waterSpriteWidth, 0),
+                   Vector3.zero - new Vector3(i * _waterSpriteWidth, WATER_Y_OFFSET),
                    Quaternion.identity).transform;
             _waterParts.Add(waterPart);
             if (i % 2 != 0)

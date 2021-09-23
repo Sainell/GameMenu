@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class FishController : BaseController
 {
-    public const float CAMERA_BORDER_OFFSET = 1.3f;
+    private const float CAMERA_BORDER_OFFSET = 1.3f;
 
     public event Action<int> CatchedData;
     private List<FishItem> _fishesData;

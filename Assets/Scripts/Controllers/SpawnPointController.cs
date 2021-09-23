@@ -9,7 +9,9 @@ public class SpawnPointController : BaseController
     public List<Vector3> PlayerSpawnPoints => _playerSpawnPoints;
 
     private const float X_OFFSET = 2f;
-    private const float Y_OFFSET = 1.5f;
+    private const float Y_OFFSET = 1.25f;
+    private const float PLAYER_Y_OFFSET = 1.75f;
+    private const int SPAWN_LINE_COUNT = 3;
     private CameraController _cameraController => GameController.Instance.CameraController;
     private List<Vector3> _respawnPoints;
     private List<Vector3> _startSpawnPoints;
@@ -21,8 +23,8 @@ public class SpawnPointController : BaseController
         _startSpawnPoints = new List<Vector3>();
         _playerSpawnPoints = new List<Vector3>();
 
-        CreateAllSpawnPoints(_cameraController.CameraHalfHeight * -1 + Y_OFFSET, 2);
-        CreateTestObjectOnPoints();
+        CreateAllSpawnPoints(_cameraController.CameraHalfHeight * -1 + Y_OFFSET, SPAWN_LINE_COUNT);
+      //  CreateTestObjectOnPoints();
         base.Initialise(levelData);
     }
     public override void Execute()
@@ -73,9 +75,10 @@ public class SpawnPointController : BaseController
             CreateRespawnPoint(posY + Y_OFFSET * i);
             CreateStartSpawnPoint(posY + Y_OFFSET * i);
         }
-        CreatePlayerSpawnPoints(posY + Y_OFFSET * lineCount);
+        CreatePlayerSpawnPoints(posY + PLAYER_Y_OFFSET * lineCount);
     }
 
+    //for test spawnpoints
     private void CreateTestObjectOnPoints()
     {
         var respawn = Resources.Load<GameObject>("fishSpawnPoint");
