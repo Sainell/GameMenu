@@ -11,8 +11,8 @@ public class FishController : BaseController
 
     public event Action<int> CatchedData;
     private List<FishItem> _fishesData;
-    private List<GameObject> _fishesSpawnPoints;
-    private List<GameObject> _startSpawnPoints;
+    private List<Vector3> _fishesSpawnPoints;
+    private List<Vector3> _startSpawnPoints;
     private Dictionary<GameObject, FishData> _fishesDic;
     private float _spawnTime;
     private bool _isPulledOut;
@@ -27,8 +27,8 @@ public class FishController : BaseController
     {
         _fishesData = levelData.FishList;
         _fishesDic = new Dictionary<GameObject, FishData>();
-        _fishesSpawnPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("FishSpawnPoint")); //todo spawncontroller 
-        _startSpawnPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("startSpawnPoint"));//todo spawncontroller 
+        _fishesSpawnPoints = GameController.Instance.SpawnPointController.RespawnPoints;
+        _startSpawnPoints = GameController.Instance.SpawnPointController.StartSpawnPoints;
         GameController.Instance.HookController.CatchedSmthEvent += OnCatch;
         GameController.Instance.HookController.PulledOutEvent += OnPulledOut;
         _isFirstSpawn = true;
@@ -82,7 +82,8 @@ public class FishController : BaseController
                     return;
                 }
                 var spawnPoint = GetSpawnPoint();
-                var newFish = GameObject.Instantiate(fish.FishData.Prefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
+                var quaternion = spawnPoint.x < 0 ? Quaternion.identity : Quaternion.Euler(Vector3.down * 180);
+                var newFish = GameObject.Instantiate(fish.FishData.Prefab, spawnPoint, quaternion);
                 newFish.name = $"{fish.FishData.FishType}{newFish.GetInstanceID()}";
 
                 _fishesDic.Add(newFish, fish.FishData);          
@@ -101,7 +102,7 @@ public class FishController : BaseController
         }
     }
 
-    private GameObject GetSpawnPoint()
+    private Vector3 GetSpawnPoint()
     {
         return _isFirstSpawn ? _startSpawnPoints[Random.Range(0, _startSpawnPoints.Count)] : _fishesSpawnPoints[Random.Range(0, _fishesSpawnPoints.Count)];
     }
@@ -152,7 +153,8 @@ public class FishController : BaseController
         if (Mathf.Abs(fish.transform.position.x) > _cameraWidth/CAMERA_BORDER_OFFSET)
         {
             var spawnPoint = _fishesSpawnPoints[Random.Range(0, _fishesSpawnPoints.Count)];
-            fish.transform.SetPositionAndRotation(spawnPoint.transform.position, spawnPoint.transform.rotation);
+            var quaternion = spawnPoint.x < 0 ? Quaternion.identity : Quaternion.Euler(Vector3.down * 180);
+            fish.transform.SetPositionAndRotation(spawnPoint, quaternion);
             return false;
         }
         return true;

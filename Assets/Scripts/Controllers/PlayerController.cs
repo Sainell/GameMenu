@@ -5,12 +5,12 @@ using UnityEngine;
 public class PlayerController : BaseController
 {
     private PlayerData _playerData;
-    private List<GameObject> _playerSpawnPoints;
+    private List<Vector3> _playerSpawnPoints;
     private GameObject _player;
     public override void Initialise(LevelData levelData)
     {
         _playerData = Resources.Load<PlayerData>($"Data/PlayerData");
-        _playerSpawnPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("PlayerSpawnPoint")); //todo spawncontroller 
+        _playerSpawnPoints = GameController.Instance.SpawnPointController.PlayerSpawnPoints;
         PlayerSpawn();
         base.Initialise(levelData);
     }
@@ -29,16 +29,17 @@ public class PlayerController : BaseController
     {
         GameObject.Destroy(_player);
     }
-    private Transform GetSpawnPoint()
+    private Vector3 GetSpawnPoint()
     {
-        return _playerSpawnPoints[Random.Range(0, _playerSpawnPoints.Count)].transform;
+        return _playerSpawnPoints[Random.Range(0, _playerSpawnPoints.Count)];
     }
     
     private void PlayerSpawn()
     {
         var spawnPoint = GetSpawnPoint();
-        _player = GameObject.Instantiate(_playerData.PlayerPrefab, spawnPoint.position, Quaternion.identity);
+        var quaternion = spawnPoint.x < 0 ? Quaternion.identity : Quaternion.Euler(Vector3.down * 180);
+        _player = GameObject.Instantiate(_playerData.PlayerPrefab, spawnPoint, Quaternion.identity);
         var playerModel = _player.transform.GetChild(0);
-        playerModel.rotation = spawnPoint.rotation;
+        playerModel.rotation = quaternion;
     }
 }

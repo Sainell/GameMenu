@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour
     public ScoreController ScoreController => _scoreController;
     public LevelController LevelController => _levelController;
     public CameraController CameraController => _cameraController;
+    public SpawnPointController SpawnPointController => _spawnPointController;
     
 
     private WaterController _waterController;
@@ -24,6 +25,7 @@ public class GameController : MonoBehaviour
     private ScoreController _scoreController;
     private LevelController _levelController;
     private CameraController _cameraController;
+    private SpawnPointController _spawnPointController;
 
     private List<BaseController> _controllers = new List<BaseController>();
 
@@ -32,11 +34,13 @@ public class GameController : MonoBehaviour
         Instance = this;
 
         _controllers.Add(_cameraController = new CameraController());
+        _controllers.Add(_spawnPointController = new SpawnPointController());
         _controllers.Add(_waterController = new WaterController());
         _controllers.Add(_fishController = new FishController());
         _controllers.Add(_playerController = new PlayerController());
         _controllers.Add(_hookController = new HookController());
         _controllers.Add(_scoreController = new ScoreController());
+        
         _levelController = new LevelController();
         _levelController.Initialise(null);
         

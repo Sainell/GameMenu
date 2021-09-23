@@ -46,11 +46,17 @@ public class WaterController : BaseController
     }
     private void CreaterWaterPlane()
     {
-        for(int i=0; i<CalculateWaterPartCount();i++)
+        for (int i = 0; i < CalculateWaterPartCount(); i++)
         {
-            _waterParts.Add(GameObject.Instantiate(_waterPartPrefab,
-                _waterPrefab.transform.position - new Vector3(i *_waterSpriteWidth, 0),
-                Quaternion.identity).transform);
+            var waterPart = GameObject.Instantiate(_waterPartPrefab,
+                   _waterPrefab.transform.position - new Vector3(i * _waterSpriteWidth, 0),
+                   Quaternion.identity).transform;
+            _waterParts.Add(waterPart);
+            if (i % 2 != 0)
+            {
+                waterPart.GetComponent<SpriteRenderer>().flipX = true;
+            }
+           
         }
     }
 
