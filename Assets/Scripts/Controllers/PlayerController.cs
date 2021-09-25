@@ -6,7 +6,14 @@ public class PlayerController : BaseController
 {
     private PlayerData _playerData;
     private List<Vector3> _playerSpawnPoints;
-    private GameObject _player;
+    private GameObject _playerPrefabRoot;
+
+    public GameObject Player { get; private set; }
+    public GameObject Boat{ get; private set; }
+    public GameObject Rod { get; private set; }
+    public Transform RodEnd { get; private set; }
+    public GameObject Hook { get; private set; }
+    
     public override void Initialise(LevelData levelData)
     {
         _playerData = Resources.Load<PlayerData>($"Data/PlayerData");
@@ -27,7 +34,7 @@ public class PlayerController : BaseController
     }
     public override void Clear()
     {
-        GameObject.Destroy(_player);
+        GameObject.Destroy(_playerPrefabRoot);
     }
     private Vector3 GetSpawnPoint()
     {
@@ -38,8 +45,12 @@ public class PlayerController : BaseController
     {
         var spawnPoint = GetSpawnPoint();
         var quaternion = spawnPoint.x < 0 ? Quaternion.identity : Quaternion.Euler(Vector3.down * 180);
-        _player = GameObject.Instantiate(_playerData.PlayerPrefab, spawnPoint, Quaternion.identity);
-        var playerModel = _player.transform.GetChild(0);
-        playerModel.rotation = quaternion;
+        _playerPrefabRoot = GameObject.Instantiate(_playerData.PlayerPrefab, spawnPoint, Quaternion.identity);
+        Player = _playerPrefabRoot.transform.GetChild(0).gameObject;
+        Boat = _playerPrefabRoot.transform.GetChild(1).gameObject;
+        Hook = _playerPrefabRoot.transform.GetChild(2).gameObject;
+        Rod = Player.transform.GetChild(0).gameObject;
+        RodEnd = Rod.transform.GetChild(0);
+        Player.transform.rotation = quaternion;
     }
 }

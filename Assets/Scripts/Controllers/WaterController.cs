@@ -29,7 +29,13 @@ public class WaterController : BaseController
     }
     public override void Clear()
     {
-
+        if (_waterParts == null)
+            return;
+        foreach (var part in _waterParts)
+        {
+            GameObject.Destroy(part.gameObject);
+        }
+        _waterParts.Clear();
     }
 
     private void WaterMoving()
