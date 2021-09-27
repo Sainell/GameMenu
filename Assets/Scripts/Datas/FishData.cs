@@ -6,7 +6,4 @@ using UnityEngine;
 public class FishData : SwimmingItemData
 {
     public FishType FishType;
-
-    public int SpawnCountMin;
-    public int SpawnCountMax;
 }

@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: RedFish
   m_EditorClassIdentifier: 
   _prefab: {fileID: 8585121596594742349, guid: bf5d3d273a317dc48a8d3b2d6f6d51a0, type: 3}
-  _speed: 7
+  _horizontalSpeed: 7
+  _verticalSpeed: 0.5
   _spawnDelayMin: 10
   _spawnDelayMax: 15
   _catchedPoint: 10

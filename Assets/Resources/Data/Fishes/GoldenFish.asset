@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: GoldenFish
   m_EditorClassIdentifier: 
   _prefab: {fileID: 8585121596594742349, guid: 1b9a2cb8e2d5c54448ca4d6e8e0533df, type: 3}
-  _speed: 3
+  _horizontalSpeed: 3
+  _verticalSpeed: 0.5
   _spawnDelayMin: 5
   _spawnDelayMax: 10
   _catchedPoint: 5

@@ -36,6 +36,8 @@ public class HookController : BaseController
         _lineRenderer = _hook.GetComponent<LineRenderer>();
         _interactableBehaviour = _hook.GetComponent<InteractableBehaviour>();
         _interactableBehaviour.CatchedEvent += OnCatched;
+
+        ResetHookPositionToDefault();
         base.Initialise(levelData);
     }
 
@@ -84,6 +86,10 @@ public class HookController : BaseController
         }
     }
 
+    private void ResetHookPositionToDefault()
+    {
+        _hook.transform.position = _rodEndPositionWithOffset;
+    }
     private void CheckHookTargetPossition()
     {
         if (_hook.transform.position == _hookTargetPosition)
